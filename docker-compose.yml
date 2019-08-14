@@ -1,0 +1,32 @@
+version: '3'
+services:
+  mhfr_backend:
+    container_name: mhfr-backend
+    image: kuunika/mhfr
+    ports:
+      - "3005:3000"
+    volumes: 
+      - ./.env:/app/config/.env
+    command: bash -c "cd app && npm start"
+    environment:
+      - NODE_ENV=staging
+      - WAIT_HOSTS:mhfr_mysql:3306
+    depends_on:
+      - mhfr_mysql
+  mhfr_frontend:
+    container_name: mhfr-frontend
+    image: kuunika/mhfr
+    ports:
+      - "80:5000"
+    volumes:
+      - ./.env:/app/client/.env
+    command: bash -c "cd /app/client && npm run build && serve -s build"
+    depends_on:
+      - mhfr_mysql
+  mhfr_mysql:
+    container_name: mhfr-mysql
+    image: kuunika/mhfr-mysql
+    env_file:
+      - ./.containers.env
+    ports:
+      - "3308:3306"
