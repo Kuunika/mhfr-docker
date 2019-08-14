@@ -3,6 +3,7 @@ services:
   mhfr_backend:
     container_name: mhfr-backend
     image: kuunika/mhfr
+    tty: true
     ports:
       - "3005:3000"
     volumes: 
@@ -16,6 +17,7 @@ services:
   mhfr_frontend:
     container_name: mhfr-frontend
     image: kuunika/mhfr
+    tty: true
     ports:
       - "80:5000"
     volumes:
@@ -26,6 +28,7 @@ services:
   mhfr_mysql:
     container_name: mhfr-mysql
     image: kuunika/mhfr-mysql
+    tty: true
     env_file:
       - ./.containers.env
     ports:
