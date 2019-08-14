@@ -22,13 +22,13 @@
 
 2. ### Configuring environment variables
 
-   - Configure the container environment file
+   - Configure the container environment file to reflect your environment
 
      ```bash
      cp .containers.env.example .containers.env
      ```
 
-   - Configure the application(s) environment file 
+   - Configure the application(s) environment file to reflect your environment
 
      ```bash
      cp .env.example .env
