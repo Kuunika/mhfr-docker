@@ -1,14 +1,14 @@
-version: '3'
+version: "3"
 services:
   mhfr_backend:
     container_name: mhfr-backend
     image: kuunika/mhfr
     tty: true
     ports:
-      - "3005:3000"
-    volumes: 
+      - "3000:3000"
+    volumes:
       - ./.env:/app/config/.env
-    command: bash -c "cd app && npm start"
+    command: bash -c "cd /app && npm start"
     environment:
       - NODE_ENV=staging
       - WAIT_HOSTS:mhfr_mysql:3306
@@ -28,8 +28,11 @@ services:
   mhfr_mysql:
     container_name: mhfr-mysql
     image: kuunika/mhfr-mysql
+    restart: always
     tty: true
     env_file:
       - ./.containers.env
     ports:
       - "3308:3306"
+    volumes:
+      - ./mysql_data:/var/lib/mysql
