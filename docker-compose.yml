@@ -1,40 +1,37 @@
-version: "3"
+version: "3.8"
+
 services:
-  mhfr_backend:
+  backend:
     container_name: mhfr-backend
-    image: kuunika/mhfr
-    tty: true
-    restart: always
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./.env:/app/config/.env
-    command: bash -c "cd /app && npm start"
-    environment:
-      - NODE_ENV=staging
-      - WAIT_HOSTS:mhfr_mysql:3306
+    image: kuunika/mhfr-backend
     depends_on:
-      - mhfr_mysql
-  mhfr_frontend:
+      - database
+    ports:
+      - 4000:4000
+    env_file:
+      - ./.env
+
+  client:
     container_name: mhfr-frontend
-    image: kuunika/mhfr
-    restart: always
-    tty: true
-    ports:
-      - "80:5000"
-    volumes:
-      - ./.env:/app/client/.env
-    command: bash -c "cd /app/client && npm run build && serve -s build"
+    image: kuunika/mhfr-frontend
     depends_on:
-      - mhfr_mysql
-  mhfr_mysql:
-    container_name: mhfr-mysql
+      - backend
+    ports:
+      - 8888:80
+    env_file:
+      - ./.env
+
+  database:
+    container_name: mhfr-database
     image: kuunika/mhfr-mysql
     restart: always
-    tty: true
     env_file:
-      - ./.containers.env
+      - ./.env
     ports:
-      - "3308:3306"
+      - "3306:3306"
+    expose:
+      - "3306"
     volumes:
-      - ./mysql_data:/var/lib/mysql
+      - mhfr_mysql:/var/lib/mysql
+volumes:
+  mhfr_mysql:
